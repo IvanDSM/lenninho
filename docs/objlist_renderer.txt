@@ -1,0 +1,11 @@
+Ok, so you're probably wondering why the hell I put a pointer to an SDL_Renderer inside the object list. 
+The reason for this is because the SDL_CreateTextureFromSurface function we use to import the images to 
+the objects requires a pointer to an SDL_Renderer. Now, I already have an SDL_Renderer on the 
+SVideoContext structure, but if I include video.h on objects.h, since objects.h is included on video.h, 
+we get an infinite #include loop which drives GCC up the wall. So, my temporary hack for this is having
+a pointer to SDL_Renderer inside each object list.
+
+Now, let me be clear: Please, do NOT allocate a Renderer for each object list. You're supposed to set
+the pointer to the SDL_Renderer you have in your SVideoContext structure. I'm not sure of what the
+consequences would be of allocating an SDL_Renderer for each object list (and frankly, I really don't
+want to know) so please don't do it.
